@@ -3,13 +3,13 @@ const sut = require('./array-helper')
 describe('Array Helper', () => {
   describe('Calling filterBy', () => {
 
-    test('Should filter array when parameter is provided', () => {
+    test('Should filter array when parameter is provided', async () => {
       const array = [{ first_name: "James", last_name: "Bond" }]
       const result = sut.filterBy(array, { last_name: 'Bond' })
       expect(result).toEqual(array)
     })
 
-    test('Should return all when empty parameter is provided', () => {
+    test('Should return all when empty parameter is provided', async () => {
       const array = [
         { first_name: "James", last_name: "Bond" }, 
         { first_name: "Ethan", last_name: "Hunt" }
@@ -18,7 +18,7 @@ describe('Array Helper', () => {
       expect(result).toEqual(array)
     })
 
-    test('Should return nothing when deph level parameter is provided', () => {
+    test('Should return nothing when deph level parameter is provided', async () => {
       const array = [
         { name: { first: "James", last: "Bond" } }, 
         { name: { first: "Ethan", last: "Hunt" } }
