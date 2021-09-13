@@ -1,11 +1,11 @@
 const { MissingParamError } = require("../../utils/errors")
 
 module.exports = class QuestionUseCase {
-  async ask ({ message = '', skillId, recipient = { id: null, type: ''} } = {}) {
+  async ask ({ message = '', skillId, staff = { id: null, type: ''} } = {}) {
     if (message.length === 0) throw new MissingParamError('Message')
     if (!skillId) throw new MissingParamError('Skill Id')
-    if (!recipient.id) throw new MissingParamError('Recipient Id')
-    if (!recipient.type || recipient.type.length === 0) throw new MissingParamError('Recipient Type')
+    if (!staff.id) throw new MissingParamError('Staff Id')
+    if (!staff.type || staff.type.length === 0) throw new MissingParamError('Staff Type')
 
     return true
   }

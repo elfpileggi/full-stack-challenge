@@ -33,18 +33,18 @@ describe('Question UseCase', () => {
     test('Should throw if recipient id is not provided', async () => {
       const { sut } = makeSut()
       const promise = sut.ask({ message: 'some text here', skillId: 1 })
-      await expect(promise).rejects.toThrow(new MissingParamError('Recipient Id'))
+      await expect(promise).rejects.toThrow(new MissingParamError('Staff Id'))
     })
   
     test('Should throw if recipient type is not provided', async () => {
       const { sut } = makeSut()
-      const promise = sut.ask({ message: 'some text here', skillId: 1, recipient: { id: 1 } })
-      await expect(promise).rejects.toThrow(new MissingParamError('Recipient Type'))
+      const promise = sut.ask({ message: 'some text here', skillId: 1, staff: { id: 1 } })
+      await expect(promise).rejects.toThrow(new MissingParamError('Staff Type'))
     })
   
     test('Should return true if required parameters are provided', async () => {
       const { sut } = makeSut()
-      const result = await sut.ask({ message: 'some text here', skillId: 1, recipient: { id: 1, type: 'student' } })
+      const result = await sut.ask({ message: 'some text here', skillId: 1, staff: { id: 1, type: 'student' } })
       expect(result).toBe(true)
     })
   })
