@@ -50,5 +50,13 @@ describe('Array Helper', () => {
       expect(result).toEqual([array[0]])
     })
 
+    test('Should return item when array parameter is provided', async () => {
+      const array = [
+        { quantity: 5 }
+      ]
+      const result = sut.filterBy(array, { quantity: '>4' })
+      expect(result).toEqual([array[0]])
+    })
+
   })
 })
