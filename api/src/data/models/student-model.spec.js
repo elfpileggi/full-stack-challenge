@@ -15,4 +15,9 @@ describe('Student Model', () => {
     const result = await sut.getBy({})
     await expect(result.length).toEqual(5)
   })
+
+  test('Should call getBy with one subject id and should return four results', async () => {
+    const result = await sut.getBy({ skills: [{ id: 3 }] })
+    await expect(result.length).toEqual(4)
+  })
 })
