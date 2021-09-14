@@ -14,7 +14,7 @@ const faculties = [
 ]
 
 module.exports = {
-  getBy: async function (filter = {}) {
+  getBy: function (filter = {}) {
     return ArrayHelper.filterBy(faculties, filter)
   }
 }
