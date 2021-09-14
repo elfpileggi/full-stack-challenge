@@ -1,10 +1,34 @@
 const { MissingParamError, NotFoundError } = require("../../utils/errors")
 const StaffUseCase = require("./staff-usecase")
 
+const makeSkillRepository = () => {
+  class SkillRepository {
+    async getById(id) {
+      this.id = id
+      return this.result
+    }
+  }
+
+  const skillRepositorySpy = new SkillRepository()
+  skillRepositorySpy.result = {
+    id: 1,
+    title: "Algebra Skill",
+    subject_id: 1,
+  }
+
+  return skillRepositorySpy
+}
+
 const makeStudentRepository = () => {
   class StudentRepository {
     async getById(id) {
       this.id = id
+      return this.result
+    }
+
+    async getBySkillIdAndGreaterLevel(skillId, level) {
+      this.skillId = skillId
+      this.level = level
       return this.result
     }
   }
@@ -31,6 +55,11 @@ const makeFacultyRepository = () => {
       this.id = id
       return this.result
     }
+
+    async getBySubjectId(subjectId) {
+      this.subjectId = subjectId
+      return this.result
+    }
   }
 
   const facultyRepositorySpy = new FacultyRepository()
@@ -44,14 +73,17 @@ const makeFacultyRepository = () => {
 }
 
 const makeSut = () => {
+  const skillRepositorySpy = makeSkillRepository()
   const studentRepositorySpy = makeStudentRepository()
   const facultyRepositorySpy = makeFacultyRepository()
   const sut = new StaffUseCase({
+    skillRepository: skillRepositorySpy,
     studentRepository: studentRepositorySpy,
     facultyRepository: facultyRepositorySpy
   })
   return {
     sut,
+    skillRepositorySpy,
     studentRepositorySpy,
     facultyRepositorySpy
   }
@@ -115,6 +147,78 @@ describe('Staff UseCase', () => {
       )
       for (const sut of suts) {
         const promise = sut.get({ skillId: 1, level: 0 })
+        await expect(promise).rejects.toThrow()
+      }
+    })
+  })
+
+  describe('Calling findBest', () => {
+    test('Should throw if required parameters are not provided', async () => {
+      const { sut } = makeSut()
+      const promise = sut.findBest()
+      await expect(promise).rejects.toThrow()
+    })
+
+    test('Should throw if message is not provided', async () => {
+      const { sut } = makeSut()
+      const promise = sut.findBest({})
+      await expect(promise).rejects.toThrow(new MissingParamError('Skill ID'))
+    })
+
+    test('Should throw if message is not provided', async () => {
+      const { sut } = makeSut()
+      const promise = sut.findBest({ skillId: 1 })
+      await expect(promise).rejects.toThrow(new MissingParamError('Level'))
+    })
+
+    test('Should throw if skill is provided but not exists', async () => {
+      const { sut, skillRepositorySpy } = makeSut()
+      skillRepositorySpy.result = null
+
+      const skillId = 0
+      const promise = sut.findBest({ skillId, level: 0 })
+      await expect(promise).rejects.toThrow(new NotFoundError(`Skill with id '${skillId}'`))
+    })
+
+    test('Should return student if required parameters are provided', async () => {
+      const { sut } = makeSut()
+      const result = await sut.findBest({ skillId: 1, level: 0 })
+      expect(result.type).toEqual('student')
+    })
+
+    test('Should return faculty if required parameters are provided', async () => {
+      const { sut, studentRepositorySpy } = makeSut()
+      studentRepositorySpy.result = null
+
+      const result = await sut.findBest({ skillId: 1, level: 4 })
+      expect(result.type).toEqual('faculty')
+    })
+
+    test('Should throw if required parameters are provided but anyone cannot answer', async () => {
+      const { sut, studentRepositorySpy, facultyRepositorySpy } = makeSut()
+      studentRepositorySpy.result = null
+      facultyRepositorySpy.result = null
+
+      const promise = sut.findBest({ skillId: 0, level: 4 })
+      await expect(promise).rejects.toThrow()
+    })
+
+    test('Should throw if invalid dependencies are provided', async () => {
+      const skillRepository = makeSkillRepository()
+      const invalid = {}
+      const suts = [].concat(
+        new StaffUseCase(),
+        new StaffUseCase({}),
+        new StaffUseCase({
+          skillRepository: invalid
+        }),
+        new StaffUseCase({
+          skillRepository,
+          studentRepository: invalid
+        })
+      )
+      for (const sut of suts) {
+        const promise = sut.findBest({ skillId: 1, level: 0 })
         await expect(promise).rejects.toThrow()
       }
     })

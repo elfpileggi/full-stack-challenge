@@ -1,7 +1,8 @@
 const { MissingParamError, NotFoundError } = require("../../utils/errors")
 
 module.exports = class SkillUseCase {
-  constructor({ facultyRepository, studentRepository } = {}) {
+  constructor({ skillRepository, facultyRepository, studentRepository } = {}) {
+    this.skillRepository = skillRepository
     this.facultyRepository = facultyRepository
     this.studentRepository = studentRepository
   }
@@ -24,5 +25,21 @@ module.exports = class SkillUseCase {
 
     if (!staff) throw new NotFoundError(`Staff with id '${id}' and type '${type}'`)
     return staff
+  }
+
+  async findBest ({ skillId, level } = {}) {
+    if (!skillId && skillId !== 0) throw new MissingParamError('Skill ID')
+    if (!level && level !== 0) throw new MissingParamError('Level')
+
+    const skill = await this.skillRepository.getById(skillId)
+    if (!skill) throw new NotFoundError(`Skill with id '${skillId}'`)
+
+    const student = await this.studentRepository.getBySkillIdAndGreaterLevel(skillId, level)
+    if (student) return { id: student.id, type: 'student' }
+
+    const faculty = await this.facultyRepository.getBySubjectId(skill.subject_id)
+    if (faculty) return { id: faculty.id, type: 'faculty' }
+
+    throw new NotFoundError(`No responsable for '${skill.title}'`)
   }
 }
