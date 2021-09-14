@@ -16,7 +16,7 @@ module.exports = {
       return (typeof originObj === "object") ? contains(paramsObj)(originObj) : customAssert(originObj, paramsObj)
     }
     const contains = paramsObj => originObj => {
-      return Object.keys(paramsObj).some(key => {
+      return Object.keys(paramsObj).every(key => {
         const result = originObj.hasOwnProperty(key) && compare(paramsObj[key])(originObj[key])
         return result
       })
