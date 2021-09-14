@@ -34,10 +34,20 @@ describe('Get Staff Router', () => {
     expect(httpResponse.body.error).toBe(new MissingParamError('ID').message)
   })
 
+  test('Should return 400 if no ID is provided', async () => {
+    const { sut } = makeSut()
+    const httpRequest = {
+      params: { id: 'no_number' }
+    }
+    const httpResponse = await sut.route(httpRequest)
+    expect(httpResponse.statusCode).toBe(400)
+    expect(httpResponse.body.error).toBe(new MissingParamError('ID').message)
+  })
+
   test('Should return 400 if no Type is provided', async () => {
     const { sut } = makeSut()
     const httpRequest = {
-      params: { id: 'valid_id' }
+      params: { id: 1 }
     }
     const httpResponse = await sut.route(httpRequest)
     expect(httpResponse.statusCode).toBe(400)
@@ -72,7 +82,7 @@ describe('Get Staff Router', () => {
     }
     const httpRequest = {
       params: {
-        id: 'valid_id',
+        id: '1',
         type: 'valid_type'
       }
     }

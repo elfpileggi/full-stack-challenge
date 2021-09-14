@@ -73,7 +73,7 @@ describe('List Skill Router', () => {
     ]
     const httpRequest = {
       params: {
-        student_id: 'valid_student_id'
+        student_id: '1'
       }
     }
     const httpResponse = await sut.route(httpRequest)

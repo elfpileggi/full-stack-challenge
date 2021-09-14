@@ -9,9 +9,9 @@ module.exports = class GetStaffRouter {
   async route (httpRequest) {
     try {
       const { id, type } = httpRequest.params
-      if (!id) return HttpResponse.badRequest(new MissingParamError('ID'))
+      if (!id || isNaN(id)) return HttpResponse.badRequest(new MissingParamError('ID'))
       if (!type) return HttpResponse.badRequest(new MissingParamError('Type'))
-      const staff = await this.staffUseCase.get(id, type)
+      const staff = await this.staffUseCase.get(parseInt(id), type)
       return HttpResponse.ok(staff)
     } catch (error) {
       return HttpResponse.serverError(error)

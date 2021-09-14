@@ -9,8 +9,8 @@ module.exports = class GetStudentRouter {
   async route (httpRequest) {
     try {
       const { id } = httpRequest.params
-      if (!id) return HttpResponse.badRequest(new MissingParamError('ID'))
-      const student = await this.studentUseCase.get(id)
+      if (!id || isNaN(id)) return HttpResponse.badRequest(new MissingParamError('ID'))
+      const student = await this.studentUseCase.get(parseInt(id))
       return HttpResponse.ok(student)
     } catch (error) {
       return HttpResponse.serverError(error)

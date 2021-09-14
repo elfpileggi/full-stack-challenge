@@ -32,6 +32,16 @@ describe('Get Student Router', () => {
     expect(httpResponse.statusCode).toBe(400)
     expect(httpResponse.body.error).toBe(new MissingParamError('ID').message)
   })
+
+  test('Should return 400 if ID is provided as string', async () => {
+    const { sut } = makeSut()
+    const httpRequest = {
+      params: { id: 'no_number' }
+    }
+    const httpResponse = await sut.route(httpRequest)
+    expect(httpResponse.statusCode).toBe(400)
+    expect(httpResponse.body.error).toBe(new MissingParamError('ID').message)
+  })
   
   test('Should return 500 if no httpRequest is provided', async () => {
     const { sut } = makeSut()
@@ -67,7 +77,7 @@ describe('Get Student Router', () => {
     }
     const httpRequest = {
       params: {
-        id: 'valid_id'
+        id: '1'
       }
     }
     const httpResponse = await sut.route(httpRequest)

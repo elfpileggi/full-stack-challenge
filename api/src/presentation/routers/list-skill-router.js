@@ -9,8 +9,8 @@ module.exports = class ListSkillRouter {
   async route (httpRequest) {
     try {
       const params = httpRequest.params
-      if (!params.student_id) return HttpResponse.badRequest(new MissingParamError('ID'))
-      const skills = await this.skillUseCase.listByStudent(params.student_id)
+      if (!params.student_id || isNaN(params.student_id)) return HttpResponse.badRequest(new MissingParamError('ID'))
+      const skills = await this.skillUseCase.listByStudent(parseInt(params.student_id))
       return HttpResponse.ok(skills)
     } catch (error) {
       return HttpResponse.serverError(error)
