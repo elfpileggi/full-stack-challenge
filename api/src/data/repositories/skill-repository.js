@@ -9,4 +9,15 @@ module.exports = {
 
     return result
   },
+  getBySkills: async (skills = []) => {
+    const result = skills.reduce((acc, skill) => {
+      const cursor = model.getBy({ id: skill.id })
+      const item = cursor.length > 0 ? cursor[0] : null
+      return item ? [item, ...acc] : acc
+    }, [])
+    
+    result.sort((a,b) => a.id - b.id)
+
+    return result
+  }
 }

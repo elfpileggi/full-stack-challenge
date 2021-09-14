@@ -32,5 +32,42 @@ describe('Skill Repository', () => {
     })
     
   })
+  
+  describe('Calling getBySkills', () => {
+
+    test('Should return object if required parameters are provided', async () => {
+      const expected = [
+        {
+          id: 3,
+          title: "Biology Skill",
+          subject_id: 2,
+        },
+        {
+          id: 4,
+          title: "Physics Skill",
+          subject_id: 2,
+        },
+        {
+          id: 6,
+          title: "American History Skill",
+          subject_id: 4,
+        }
+      ]
+      const result = await sut.getBySkills([{id: 3}, {id: 4}, {id: 6}])
+      expect(typeof result).toEqual('object')
+      expect(result).toEqual(expected)
+    })
+
+    test('Should return empty array if required parameters are provided but no results', async () => {
+      const result = await sut.getBySkills([{id: 0}])
+      expect(result).toEqual([])
+    })
+
+    test('Should return empty array if required parameters are not provided', async () => {
+      const result = await sut.getBySkills()
+      expect(result).toEqual([])
+    })
+  })
+  
 
 })
