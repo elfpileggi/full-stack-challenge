@@ -18,13 +18,36 @@ describe('Array Helper', () => {
       expect(result).toEqual(array)
     })
 
-    test('Should return nothing when deph level parameter is provided', async () => {
+    test('Should return item when object nested parameter is provided', async () => {
       const array = [
         { name: { first: "James", last: "Bond" } }, 
         { name: { first: "Ethan", last: "Hunt" } }
       ]
       const result = sut.filterBy(array, { name: { last: "Hunt" } })
       expect(result).toEqual([array[1]])
+    })
+
+    test('Should return item when array of objects parameter is provided', async () => {
+      const array = [
+        { 
+          names: [
+            { first: "James", last: "Bond" },
+            { first: "Ethan", last: "Hunt" }
+          ] 
+        }
+      ]
+      const result = sut.filterBy(array, { names: [{ last: "Hunt" }] })
+      expect(result).toEqual([array[0]])
+    })
+
+    test('Should return item when array parameter is provided', async () => {
+      const array = [
+        { 
+          ids: [1, 2] 
+        }
+      ]
+      const result = sut.filterBy(array, { ids: [1] })
+      expect(result).toEqual([array[0]])
     })
 
   })
