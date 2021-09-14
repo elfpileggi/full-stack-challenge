@@ -29,6 +29,6 @@ module.exports = class QuestionUseCase {
     const faculty = await this.facultyRepository.getBySubjectId(skill.subject_id)
     if (faculty) return { id: faculty.id, type: 'faculty' }
 
-    throw new NotFoundError(`No responsable for the skill '${skill.title}'`)
+    throw new NotFoundError(`No responsable for '${skill.title}'`)
   }
 }
