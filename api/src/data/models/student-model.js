@@ -45,7 +45,7 @@ const students = [
     ],
   },
   {
-    id: 2,
+    id: 5,
     name: "Friedrich Nietzsche",
     email: "iamtheubermench@soraschools.com",
     house: "Nightshade",
