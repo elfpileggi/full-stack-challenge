@@ -9,8 +9,19 @@ export const SessionProvider = ({ children }) => {
 
   const value = {
     student: state.student,
-    saveStudent: (student) => {
+    staff: state.staff,
+    skill: state.skill,
+    setStudent: (student) => {
       dispatch({ type: actions.SAVE_STUDENT, payload: { student } })
+    },
+    setStaff: (staff) => {
+      dispatch({ type: actions.SAVE_STAFF, payload: { staff } })
+    },
+    setSkill: (skill) => {
+      dispatch({ type: actions.SAVE_STAFF, payload: { skill } })
+    },
+    cleanSession: () => {
+      dispatch({ type: actions.CLEAN })
     }
   }
 

@@ -6,12 +6,12 @@ import "./Lobby.css"
 
 const Lobby = () => {
   const history = useHistory()
-  const { saveStudent } = useContext(SessionContext)
+  const { setStudent } = useContext(SessionContext)
   const findStudent = async () => {
     const id = document.getElementById('student_id').value
     const result = await getStudentById(id)
     if (result.success) {
-      saveStudent(result.data)
+      setStudent(result.data)
       history.push('/student')
     } else {
       document.getElementById('lobby').classList.add('error')
