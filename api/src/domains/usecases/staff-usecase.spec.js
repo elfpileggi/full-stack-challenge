@@ -23,10 +23,10 @@ const makeStudentRepository = () => {
   class StudentRepository {
     async getById (id) {
       this.id = id
-      return this.result
+      return this.student
     }
 
-    async getBySkillIdAndGreaterLevel (skillId, level) {
+    async getBySkillIdAndHouseAndGreaterLevel (skillId, level) {
       this.skillId = skillId
       this.level = level
       return this.result
@@ -34,7 +34,7 @@ const makeStudentRepository = () => {
   }
 
   const studentRepositorySpy = new StudentRepository()
-  studentRepositorySpy.result = {
+  studentRepositorySpy.student = studentRepositorySpy.result = {
     id: 1,
     name: 'Tester',
     email: 'test@soraschools.com',
@@ -161,13 +161,28 @@ describe('Staff UseCase', () => {
     test('Should throw if message is not provided', async () => {
       const { sut } = makeSut()
       const promise = sut.findBest({})
+      await expect(promise).rejects.toThrow(new MissingParamError('Student ID'))
+    })
+
+    test('Should throw if message is not provided', async () => {
+      const { sut } = makeSut()
+      const promise = sut.findBest({ studentId: 1 })
       await expect(promise).rejects.toThrow(new MissingParamError('Skill ID'))
     })
 
     test('Should throw if message is not provided', async () => {
       const { sut } = makeSut()
-      const promise = sut.findBest({ skillId: 1 })
+      const promise = sut.findBest({ studentId: 1, skillId: 1 })
       await expect(promise).rejects.toThrow(new MissingParamError('Level'))
+    })
+
+    test('Should throw if skill is provided but not exists', async () => {
+      const { sut, studentRepositorySpy } = makeSut()
+      studentRepositorySpy.student = null
+
+      const studentId = 0
+      const promise = sut.findBest({ studentId, skillId: 0, level: 0 })
+      await expect(promise).rejects.toThrow(new NotFoundError(`Student with id '${studentId}'`))
     })
 
     test('Should throw if skill is provided but not exists', async () => {
@@ -175,13 +190,13 @@ describe('Staff UseCase', () => {
       skillRepositorySpy.result = null
 
       const skillId = 0
-      const promise = sut.findBest({ skillId, level: 0 })
+      const promise = sut.findBest({ studentId: 1, skillId, level: 0 })
       await expect(promise).rejects.toThrow(new NotFoundError(`Skill with id '${skillId}'`))
     })
 
     test('Should return student if required parameters are provided', async () => {
       const { sut } = makeSut()
-      const result = await sut.findBest({ skillId: 1, level: 0 })
+      const result = await sut.findBest({ studentId: 1, skillId: 1, level: 0 })
       expect(result.type).toEqual('student')
     })
 
@@ -189,7 +204,7 @@ describe('Staff UseCase', () => {
       const { sut, studentRepositorySpy } = makeSut()
       studentRepositorySpy.result = null
 
-      const result = await sut.findBest({ skillId: 1, level: 4 })
+      const result = await sut.findBest({ studentId: 1, skillId: 1, level: 4 })
       expect(result.type).toEqual('faculty')
     })
 
@@ -198,7 +213,7 @@ describe('Staff UseCase', () => {
       studentRepositorySpy.result = null
       facultyRepositorySpy.result = null
 
-      const promise = sut.findBest({ skillId: 0, level: 4 })
+      const promise = sut.findBest({ studentId: 0, skillId: 0, level: 4 })
       await expect(promise).rejects.toThrow()
     })
 

@@ -27,14 +27,18 @@ module.exports = class SkillUseCase {
     return staff
   }
 
-  async findBest ({ skillId, level } = {}) {
+  async findBest ({ studentId, skillId, level } = {}) {
+    if (!studentId && studentId !== 0) throw new MissingParamError('Student ID')
     if (!skillId && skillId !== 0) throw new MissingParamError('Skill ID')
     if (!level && level !== 0) throw new MissingParamError('Level')
+
+    const sessionStudent = await this.studentRepository.getById(studentId)
+    if (!sessionStudent) throw new NotFoundError(`Student with id '${studentId}'`)
 
     const skill = await this.skillRepository.getById(skillId)
     if (!skill) throw new NotFoundError(`Skill with id '${skillId}'`)
 
-    const student = await this.studentRepository.getBySkillIdAndGreaterLevel(skillId, level)
+    const student = await this.studentRepository.getBySkillIdAndHouseAndGreaterLevel(skillId, sessionStudent.house, level)
     if (student) return { id: student.id, type: 'student' }
 
     const faculty = await this.facultyRepository.getBySubjectId(skill.subject_id)

@@ -2,19 +2,19 @@ const { MissingParamError } = require('../../utils/errors')
 const sut = require('./student-repository')
 
 describe('Student Repository', () => {
-  describe('Calling getBySkillIdAndGreaterLevel', () => {
+  describe('Calling getBySkillIdAndHouseAndGreaterLevel', () => {
     test('Should throw if required parameters are not provided', async () => {
-      const promise = sut.getBySkillIdAndGreaterLevel()
+      const promise = sut.getBySkillIdAndHouseAndGreaterLevel()
       await expect(promise).rejects.toThrow()
     })
 
     test('Should throw if id is not provided', async () => {
-      const promise = sut.getBySkillIdAndGreaterLevel()
+      const promise = sut.getBySkillIdAndHouseAndGreaterLevel()
       await expect(promise).rejects.toThrow(new MissingParamError('Skill ID'))
     })
 
     test('Should throw if id is not provided', async () => {
-      const promise = sut.getBySkillIdAndGreaterLevel(1)
+      const promise = sut.getBySkillIdAndHouseAndGreaterLevel(1)
       await expect(promise).rejects.toThrow(new MissingParamError('Level'))
     })
 
@@ -30,19 +30,19 @@ describe('Student Repository', () => {
           { id: 6, level: 1 }
         ]
       }
-      const result = await sut.getBySkillIdAndGreaterLevel(3, 1)
+      const result = await sut.getBySkillIdAndHouseAndGreaterLevel(3, 'Heqet', 1)
       expect(typeof result).toEqual('object')
       expect(result).toEqual(expected)
     })
 
     test('Should return null if required parameters are provided but with higher level', async () => {
-      const result = await sut.getBySkillIdAndGreaterLevel(3, 4)
+      const result = await sut.getBySkillIdAndHouseAndGreaterLevel(3, 'Nightshade', 4)
       expect(typeof result).toEqual('object')
       expect(result).toBeNull()
     })
 
     test('Should return null if required parameters are provided but no results', async () => {
-      const result = await sut.getBySkillIdAndGreaterLevel(0, 0)
+      const result = await sut.getBySkillIdAndHouseAndGreaterLevel(0, '', 0)
       expect(result).toBeNull()
     })
   })

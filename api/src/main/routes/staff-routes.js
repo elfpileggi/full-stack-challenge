@@ -4,5 +4,5 @@ const FindBestStaffRouterComposer = require('../composers/find-best-staff-router
 
 module.exports = router => {
   router.get('/staff/:type/:id', adapt(GetStaffRouterComposer.compose()))
-  router.get('/staffs/best/:skill_id/:level', adapt(FindBestStaffRouterComposer.compose()))
+  router.get('/staff/best/:skill_id/:level/student/:student_id', adapt(FindBestStaffRouterComposer.compose()))
 }

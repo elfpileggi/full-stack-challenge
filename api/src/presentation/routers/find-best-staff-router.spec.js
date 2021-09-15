@@ -24,10 +24,32 @@ const makeSut = () => {
 }
 
 describe('Find Best Staff Router', () => {
-  test('Should return 400 if no Skill ID is provided', async () => {
+  test('Should return 400 if no Student ID is provided', async () => {
     const { sut } = makeSut()
     const httpRequest = {
       params: {}
+    }
+    const httpResponse = await sut.route(httpRequest)
+    expect(httpResponse.statusCode).toBe(400)
+    expect(httpResponse.body.error).toBe(new MissingParamError('Student ID').message)
+  })
+
+  test('Should return 400 if no Skill ID is provided', async () => {
+    const { sut } = makeSut()
+    const httpRequest = {
+      params: { student_id: 'no_number' }
+    }
+    const httpResponse = await sut.route(httpRequest)
+    expect(httpResponse.statusCode).toBe(400)
+    expect(httpResponse.body.error).toBe(new MissingParamError('Student ID').message)
+  })
+
+  test('Should return 400 if no Skill ID is provided', async () => {
+    const { sut } = makeSut()
+    const httpRequest = {
+      params: {
+        student_id: 1
+      }
     }
     const httpResponse = await sut.route(httpRequest)
     expect(httpResponse.statusCode).toBe(400)
@@ -37,7 +59,10 @@ describe('Find Best Staff Router', () => {
   test('Should return 400 if no Skill ID is provided', async () => {
     const { sut } = makeSut()
     const httpRequest = {
-      params: { skill_id: 'no_number' }
+      params: {
+        student_id: 1,
+        skill_id: 'no_number'
+      }
     }
     const httpResponse = await sut.route(httpRequest)
     expect(httpResponse.statusCode).toBe(400)
@@ -47,7 +72,10 @@ describe('Find Best Staff Router', () => {
   test('Should return 400 if no ID is provided', async () => {
     const { sut } = makeSut()
     const httpRequest = {
-      params: { skill_id: 1 }
+      params: {
+        student_id: 1,
+        skill_id: 1
+      }
     }
     const httpResponse = await sut.route(httpRequest)
     expect(httpResponse.statusCode).toBe(400)
@@ -57,7 +85,7 @@ describe('Find Best Staff Router', () => {
   test('Should return 400 if no ID is provided', async () => {
     const { sut } = makeSut()
     const httpRequest = {
-      params: { skill_id: 1, level: 'no_number' }
+      params: { student_id: 1, skill_id: 1, level: 'no_number' }
     }
     const httpResponse = await sut.route(httpRequest)
     expect(httpResponse.statusCode).toBe(400)
@@ -91,6 +119,7 @@ describe('Find Best Staff Router', () => {
     }
     const httpRequest = {
       params: {
+        student_id: '1',
         skill_id: '1',
         level: '1'
       }

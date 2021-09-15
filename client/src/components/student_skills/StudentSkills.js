@@ -19,7 +19,7 @@ const Student = (props) => {
   }
 
   const askAboutSkill = (id, level, title) => async () => {
-    const result = await findBestStaffForAnswer(id, level)
+    const result = await findBestStaffForAnswer(student.id, id, level)
     if (result.success) {
       setSkill({ id, title })
       setStaff(result.data)

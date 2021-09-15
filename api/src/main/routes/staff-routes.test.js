@@ -12,9 +12,10 @@ describe('Staff Routes', () => {
 
   describe('Call find best recommended staff', () => {
     test('Should return 200 when valid parameters are provided', async () => {
+      const studentId = 1
       const skillId = 1
       const level = 1
-      await request(app).get(`/staffs/best/${skillId}/${level}`).expect(200)
+      await request(app).get(`/staff/best/${skillId}/${level}/student/${studentId}`).expect(200)
     })
   })
 })
