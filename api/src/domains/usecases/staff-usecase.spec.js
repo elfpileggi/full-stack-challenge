@@ -1,9 +1,9 @@
-const { MissingParamError, NotFoundError } = require("../../utils/errors")
-const StaffUseCase = require("./staff-usecase")
+const { MissingParamError, NotFoundError } = require('../../utils/errors')
+const StaffUseCase = require('./staff-usecase')
 
 const makeSkillRepository = () => {
   class SkillRepository {
-    async getById(id) {
+    async getById (id) {
       this.id = id
       return this.result
     }
@@ -12,8 +12,8 @@ const makeSkillRepository = () => {
   const skillRepositorySpy = new SkillRepository()
   skillRepositorySpy.result = {
     id: 1,
-    title: "Algebra Skill",
-    subject_id: 1,
+    title: 'Algebra Skill',
+    subject_id: 1
   }
 
   return skillRepositorySpy
@@ -21,12 +21,12 @@ const makeSkillRepository = () => {
 
 const makeStudentRepository = () => {
   class StudentRepository {
-    async getById(id) {
+    async getById (id) {
       this.id = id
       return this.result
     }
 
-    async getBySkillIdAndGreaterLevel(skillId, level) {
+    async getBySkillIdAndGreaterLevel (skillId, level) {
       this.skillId = skillId
       this.level = level
       return this.result
@@ -36,14 +36,14 @@ const makeStudentRepository = () => {
   const studentRepositorySpy = new StudentRepository()
   studentRepositorySpy.result = {
     id: 1,
-    name: "Tester",
-    email: "test@soraschools.com",
-    house: "Heqet",
+    name: 'Tester',
+    email: 'test@soraschools.com',
+    house: 'Heqet',
     skills: [
       { id: 3, level: 2 },
       { id: 4, level: 3 },
-      { id: 6, level: 1 },
-    ],
+      { id: 6, level: 1 }
+    ]
   }
 
   return studentRepositorySpy
@@ -51,12 +51,12 @@ const makeStudentRepository = () => {
 
 const makeFacultyRepository = () => {
   class FacultyRepository {
-    async getById(id) {
+    async getById (id) {
       this.id = id
       return this.result
     }
 
-    async getBySubjectId(subjectId) {
+    async getBySubjectId (subjectId) {
       this.subjectId = subjectId
       return this.result
     }
@@ -90,7 +90,6 @@ const makeSut = () => {
 }
 
 describe('Staff UseCase', () => {
-
   describe('Calling get', () => {
     test('Should throw if required parameters are not provided', async () => {
       const { sut } = makeSut()
@@ -223,6 +222,4 @@ describe('Staff UseCase', () => {
       }
     })
   })
-
-
 })

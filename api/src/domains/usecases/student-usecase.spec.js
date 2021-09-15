@@ -1,14 +1,14 @@
-const { MissingParamError, NotFoundError } = require("../../utils/errors")
-const StudentUseCase = require("./student-usecase")
+const { MissingParamError } = require('../../utils/errors')
+const StudentUseCase = require('./student-usecase')
 
 const makeStudentRepository = () => {
   class StudentRepository {
-    async getById(id) {
+    async getById (id) {
       this.id = id
       return this.result
     }
 
-    async getAll() {
+    async getAll () {
       return [this.result]
     }
   }
@@ -16,14 +16,14 @@ const makeStudentRepository = () => {
   const studentRepositorySpy = new StudentRepository()
   studentRepositorySpy.result = {
     id: 1,
-    name: "Tester",
-    email: "test@soraschools.com",
-    house: "Heqet",
+    name: 'Tester',
+    email: 'test@soraschools.com',
+    house: 'Heqet',
     skills: [
       { id: 3, level: 2 },
       { id: 4, level: 3 },
-      { id: 6, level: 1 },
-    ],
+      { id: 6, level: 1 }
+    ]
   }
 
   return studentRepositorySpy
@@ -41,8 +41,6 @@ const makeSut = () => {
 }
 
 describe('Student UseCase', () => {
-
-
   describe('Calling get', () => {
     test('Should throw if required parameters are not provided', async () => {
       const { sut } = makeSut()
@@ -84,30 +82,4 @@ describe('Student UseCase', () => {
       }
     })
   })
-
-
-  describe('Calling list', () => {
-    test('Should return object if required parameters are provided', async () => {
-      const { sut, studentRepositorySpy } = makeSut()
-      const result = await sut.list()
-      expect(result).toEqual([studentRepositorySpy.result])
-    })
-
-    test('Should throw if invalid dependencies are provided', async () => {
-      const invalid = {}
-      const suts = [].concat(
-        new StudentUseCase(),
-        new StudentUseCase({}),
-        new StudentUseCase({
-          studentRepository: invalid
-        })
-      )
-      for (const sut of suts) {
-        const promise = sut.list()
-        await expect(promise).rejects.toThrow()
-      }
-    })
-  })
-
-
 })

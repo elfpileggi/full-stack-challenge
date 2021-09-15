@@ -1,5 +1,5 @@
-const { MissingParamError } = require("../../utils/errors")
-const model = require("../models/faculty-model")
+const { MissingParamError } = require('../../utils/errors')
+const model = require('../models/faculty-model')
 
 module.exports = {
   getById: async (id) => {

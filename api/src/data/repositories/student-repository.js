@@ -1,5 +1,5 @@
-const { MissingParamError } = require("../../utils/errors")
-const model = require("../models/student-model")
+const { MissingParamError } = require('../../utils/errors')
+const model = require('../models/student-model')
 
 module.exports = {
   getBySkillIdAndGreaterLevel: async (skillId, level) => {
@@ -16,9 +16,5 @@ module.exports = {
     const result = list.length > 0 ? list[0] : null
 
     return result
-  },
-  getAll: async () => {
-    const list = model.getBy({})
-    return list
   }
 }

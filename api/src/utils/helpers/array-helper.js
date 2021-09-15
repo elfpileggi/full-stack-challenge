@@ -13,14 +13,14 @@ module.exports = {
     }
     const compare = paramsObj => originObj => {
       if (Array.isArray(originObj)) return compareDeph(paramsObj, originObj)
-      return (typeof originObj === "object") ? contains(paramsObj)(originObj) : customAssert(originObj, paramsObj)
+      return (typeof originObj === 'object') ? contains(paramsObj)(originObj) : customAssert(originObj, paramsObj)
     }
     const contains = paramsObj => originObj => {
       return Object.keys(paramsObj).every(key => {
-        const result = originObj.hasOwnProperty(key) && compare(paramsObj[key])(originObj[key])
+        const result = key in originObj && compare(paramsObj[key])(originObj[key])
         return result
       })
-    } 
+    }
 
     return list.filter(contains(params))
   }

@@ -1,7 +1,7 @@
-const { MissingParamError, NotFoundError } = require("../../utils/errors")
+const { MissingParamError, NotFoundError } = require('../../utils/errors')
 
 module.exports = class SkillUseCase {
-  constructor({ skillRepository, facultyRepository, studentRepository } = {}) {
+  constructor ({ skillRepository, facultyRepository, studentRepository } = {}) {
     this.skillRepository = skillRepository
     this.facultyRepository = facultyRepository
     this.studentRepository = studentRepository
@@ -17,7 +17,7 @@ module.exports = class SkillUseCase {
       const student = await this.studentRepository.getById(id)
       staff = { id, type, name: student.name }
     }
-    
+
     if (type === 'faculty') {
       const faculty = await this.facultyRepository.getById(id)
       staff = { id, type, name: faculty.name }

@@ -1,10 +1,8 @@
-const objectHelper = require("../../utils/helpers/object-helper")
-
 module.exports = class RouterAdapter {
   static adapt (router) {
     return async (req, res, next) => {
       const httpRequest = {
-        params: { ...req.body, ...req.query, ...req.params },
+        params: { ...req.body, ...req.query, ...req.params }
       }
 
       const httpResponse = await router.route(httpRequest)

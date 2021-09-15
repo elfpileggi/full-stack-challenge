@@ -1,5 +1,5 @@
-const { MissingParamError } = require("../../utils/errors")
-const model = require("../models/skill-model")
+const { MissingParamError } = require('../../utils/errors')
+const model = require('../models/skill-model')
 
 module.exports = {
   getById: async (id) => {
@@ -15,8 +15,8 @@ module.exports = {
       const item = cursor.length > 0 ? cursor[0] : null
       return item ? [item, ...acc] : acc
     }, [])
-    
-    result.sort((a,b) => a.id - b.id)
+
+    result.sort((a, b) => a.id - b.id)
 
     return result
   }

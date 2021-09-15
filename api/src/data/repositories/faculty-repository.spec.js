@@ -2,13 +2,12 @@ const { MissingParamError } = require('../../utils/errors')
 const sut = require('./faculty-repository')
 
 describe('Faculty Repository', () => {
-
   describe('Calling getById', () => {
     test('Should throw if required parameters are not provided', async () => {
       const promise = sut.getById()
       await expect(promise).rejects.toThrow()
     })
-    
+
     test('Should throw if id is not provided', async () => {
       const promise = sut.getById()
       await expect(promise).rejects.toThrow(new MissingParamError('ID'))
@@ -30,14 +29,13 @@ describe('Faculty Repository', () => {
       expect(result).toBeNull()
     })
   })
-    
-  describe('Calling getBySubjectId', () => {
 
+  describe('Calling getBySubjectId', () => {
     test('Should throw if required parameters are not provided', async () => {
       const promise = sut.getBySubjectId()
       await expect(promise).rejects.toThrow()
     })
-    
+
     test('Should throw if id is not provided', async () => {
       const promise = sut.getBySubjectId()
       await expect(promise).rejects.toThrow(new MissingParamError('Subject ID'))
@@ -58,7 +56,5 @@ describe('Faculty Repository', () => {
       const result = await sut.getBySubjectId(0)
       expect(result).toBeNull()
     })
-    
   })
-
 })

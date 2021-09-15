@@ -1,9 +1,9 @@
-const { MissingParamError } = require("../../utils/errors")
-const SkillUseCase = require("./skill-usecase")
+const { MissingParamError } = require('../../utils/errors')
+const SkillUseCase = require('./skill-usecase')
 
 const makeSkillRepository = () => {
   class SkillRepository {
-    async getBySkills(skills) {
+    async getBySkills (skills) {
       this.skills = skills
       return this.result
     }
@@ -13,18 +13,18 @@ const makeSkillRepository = () => {
   skillRepositorySpy.result = [
     {
       id: 3,
-      title: "Biology Skill",
-      subject_id: 2,
+      title: 'Biology Skill',
+      subject_id: 2
     },
     {
       id: 4,
-      title: "Physics Skill",
-      subject_id: 2,
+      title: 'Physics Skill',
+      subject_id: 2
     },
     {
       id: 6,
-      title: "American History Skill",
-      subject_id: 4,
+      title: 'American History Skill',
+      subject_id: 4
     }
   ]
 
@@ -33,7 +33,7 @@ const makeSkillRepository = () => {
 
 const makeStudentRepository = () => {
   class StudentRepository {
-    async getById(id) {
+    async getById (id) {
       this.id = id
       return this.result
     }
@@ -42,14 +42,14 @@ const makeStudentRepository = () => {
   const studentRepositorySpy = new StudentRepository()
   studentRepositorySpy.result = {
     id: 1,
-    name: "Tester",
-    email: "test@soraschools.com",
-    house: "Heqet",
+    name: 'Tester',
+    email: 'test@soraschools.com',
+    house: 'Heqet',
     skills: [
       { id: 3, level: 2 },
       { id: 4, level: 3 },
-      { id: 6, level: 1 },
-    ],
+      { id: 6, level: 1 }
+    ]
   }
 
   return studentRepositorySpy
@@ -70,8 +70,6 @@ const makeSut = () => {
 }
 
 describe('Skill UseCase', () => {
-
-
   describe('Calling listByStudent', () => {
     test('Should throw if required parameters are not provided', async () => {
       const { sut } = makeSut()
@@ -118,5 +116,4 @@ describe('Skill UseCase', () => {
       }
     })
   })
-
 })

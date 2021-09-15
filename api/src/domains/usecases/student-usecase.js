@@ -1,7 +1,7 @@
-const { MissingParamError, NotFoundError } = require("../../utils/errors")
+const { MissingParamError, NotFoundError } = require('../../utils/errors')
 
 module.exports = class StudentUseCase {
-  constructor({ studentRepository } = {}) {
+  constructor ({ studentRepository } = {}) {
     this.studentRepository = studentRepository
   }
 
@@ -11,11 +11,6 @@ module.exports = class StudentUseCase {
     const result = await this.studentRepository.getById(id)
     if (!result) throw new NotFoundError(`Student with id '${id}'`)
 
-    return result
-  }
-
-  async list () {
-    const result = await this.studentRepository.getAll()
     return result
   }
 }
